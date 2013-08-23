@@ -1,0 +1,21 @@
+global:
+  env:
+    - APP_ENV: pagoda
+db1:
+  name: phpmook_sample
+  type: mysql
+web1:
+  name: phpmook
+  shared_writable_dirs:
+    - logs
+  document_root: public
+  php_version: 5.4.14
+  php_date_timezone: "Asia/Tokyo"
+  php_extensions:
+    - pdo_mysql
+    - zip
+  after_build:
+    - "curl -s http://getcomposer.org/installer | php"
+    - "php composer.phar install"
+  before_deploy:
+    - "bin/phpmig migrate"

@@ -1,0 +1,21 @@
+<html>
+<head>
+    <title>Speak!</title>
+</head>
+    <body>
+        <h1>Speak!</h1>
+        <form action="speak" method="post">
+            <input type="text" name="name" />
+            <input type="text" name="message" />
+            <input type="submit" value="Speak!" />
+        </form>
+        <ul>
+        {% for post in posts %}
+        <li>{{ post.name }}
+        {{ post.message }}
+        {{ post.created|date("Y-m-d H:i:s") }}
+        </li>
+        {% endfor %}
+        <ul>
+    </body>
+</html>

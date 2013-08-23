@@ -1,0 +1,69 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+<title>~/Documents/php_mook_sample/public/index.php.html</title>
+<meta name="Generator" content="Vim/7.3">
+<meta name="plugin-version" content="vim7.3_v12">
+<meta name="syntax" content="php">
+<meta name="settings" content="number_lines,use_css,pre_wrap,no_foldcolumn,expand_tabs,prevent_copy=">
+<meta name="colorscheme" content="darkblue">
+<style type="text/css">
+<!--
+pre { white-space: pre-wrap; font-family: monospace; color: #c0c0c0; background-color: #000040; }
+body { font-family: monospace; color: #c0c0c0; background-color: #000040; }
+* { font-size: 1em; }
+.Constant { color: #ffa0a0; }
+.Statement { color: #ffff60; }
+.Type { color: #60ff60; }
+.LineNr { color: #90f020; }
+.PreProc { color: #ff80ff; }
+.Special { color: #ffa500; }
+.Identifier { color: #40ffff; }
+.Comment { color: #80a0ff; }
+-->
+</style>
+</head>
+<body>
+<pre id='vimCodeElement'>
+<span class="LineNr"> 1 </span><span class="Special">&lt;?php</span>
+<span class="LineNr"> 2 </span><span class="PreProc">require</span> <span class="Constant">__DIR__</span> <span class="Statement">.</span> '<span class="Constant">/../vendor/autoload.php</span>';
+<span class="LineNr"> 3 </span>
+<span class="LineNr"> 4 </span><span class="Statement">$</span><span class="Identifier">app</span> <span class="Statement">=</span> <span class="PreProc">new</span> Silex\Application<span class="Special">()</span>;
+<span class="LineNr"> 5 </span>
+<span class="LineNr"> 6 </span><span class="Statement">$</span><span class="Identifier">app</span><span class="Type">-&gt;</span>register<span class="Special">(</span><span class="PreProc">new</span> Silex\Provider\TwigServiceProvider<span class="Special">()</span>, <span class="Type">array</span><span class="Special">(</span>
+<span class="LineNr"> 7 </span>    '<span class="Constant">twig.path</span>' <span class="Statement">=</span><span class="Statement">&gt;</span> <span class="Constant">__DIR__</span><span class="Statement">.</span>'<span class="Constant">/../views</span>',
+<span class="LineNr"> 8 </span><span class="Special">))</span>;
+<span class="LineNr"> 9 </span>
+<span class="LineNr">10 </span><span class="Comment">// データベース接続情報の読込</span>
+<span class="LineNr">11 </span><span class="Statement">$</span><span class="Identifier">env</span> <span class="Statement">=</span> <span class="Identifier">getenv</span><span class="Special">(</span>'<span class="Constant">APP_ENV</span>'<span class="Special">)</span> <span class="Statement">?:</span> '<span class="Constant">development</span>';
+<span class="LineNr">12 </span><span class="Statement">$</span><span class="Identifier">config</span> <span class="Statement">=</span> <span class="PreProc">require</span> <span class="Constant">__DIR__</span> <span class="Statement">.</span> &quot;<span class="Constant">/../config/</span><span class="Statement">$</span><span class="Identifier">env</span><span class="Constant">.php</span>&quot;;
+<span class="LineNr">13 </span><span class="Statement">$</span><span class="Identifier">app</span><span class="Type">-&gt;</span>register<span class="Special">(</span><span class="PreProc">new</span> Silex\Provider\DoctrineServiceProvider<span class="Special">()</span>, <span class="Type">array</span><span class="Special">(</span>
+<span class="LineNr">14 </span>    '<span class="Constant">db.options</span>' <span class="Statement">=</span><span class="Statement">&gt;</span> <span class="Statement">$</span><span class="Identifier">config</span><span class="Special">[</span>'<span class="Constant">db</span>'<span class="Special">]</span>,
+<span class="LineNr">15 </span><span class="Special">))</span>;
+<span class="LineNr">16 </span>
+<span class="LineNr">17 </span><span class="Comment">// トップ画面</span>
+<span class="LineNr">18 </span><span class="Statement">$</span><span class="Identifier">app</span><span class="Type">-&gt;</span>get<span class="Special">(</span>'<span class="Constant">/</span>', function<span class="Special">(</span>Silex\Application <span class="Statement">$</span><span class="Identifier">app</span><span class="Special">)</span> <span class="Special">{</span>
+<span class="LineNr">19 </span>    <span class="Statement">$</span><span class="Identifier">posts</span> <span class="Statement">=</span> <span class="Statement">$</span><span class="Identifier">app</span><span class="Special">[</span>'<span class="Constant">db</span>'<span class="Special">]</span><span class="Type">-&gt;</span>fetchAll<span class="Special">(</span>'
+<span class="LineNr">20 </span><span class="Constant">        </span><span class="Statement">SELECT</span><span class="Constant"> name, message, unix_timestamp(created) </span><span class="Special">as</span><span class="Constant"> created</span>
+<span class="LineNr">21 </span><span class="Constant">        </span><span class="Special">FROM</span><span class="Constant"> posts </span><span class="Special">ORDER</span><span class="Constant"> </span><span class="Special">BY</span><span class="Constant"> created </span><span class="Special">DESC</span><span class="Constant"> LIMIT </span><span class="Constant">5</span>
+<span class="LineNr">22 </span><span class="Constant">    </span>'<span class="Special">)</span>;
+<span class="LineNr">23 </span>    <span class="Statement">return</span> <span class="Statement">$</span><span class="Identifier">app</span><span class="Special">[</span>'<span class="Constant">twig</span>'<span class="Special">]</span><span class="Type">-&gt;</span>render<span class="Special">(</span>'<span class="Special">index</span><span class="Constant">.twig</span>', <span class="Type">array</span><span class="Special">(</span>
+<span class="LineNr">24 </span>        '<span class="Constant">posts</span>' <span class="Statement">=</span><span class="Statement">&gt;</span> <span class="Statement">$</span><span class="Identifier">posts</span>,
+<span class="LineNr">25 </span>    <span class="Special">))</span>;
+<span class="LineNr">26 </span><span class="Special">})</span>;
+<span class="LineNr">27 </span>
+<span class="LineNr">28 </span><span class="Comment">// 投稿処理</span>
+<span class="LineNr">29 </span><span class="Statement">$</span><span class="Identifier">app</span><span class="Type">-&gt;</span>post<span class="Special">(</span>'<span class="Constant">/speak</span>', function<span class="Special">(</span>Silex\Application <span class="Statement">$</span><span class="Identifier">app</span><span class="Special">)</span> <span class="Special">{</span>
+<span class="LineNr">30 </span>    <span class="Statement">$</span><span class="Identifier">name</span> <span class="Statement">=</span> <span class="Statement">$</span><span class="Identifier">app</span><span class="Special">[</span>'<span class="Constant">request</span>'<span class="Special">]</span><span class="Type">-&gt;</span>get<span class="Special">(</span>'<span class="Constant">name</span>'<span class="Special">)</span>;
+<span class="LineNr">31 </span>    <span class="Statement">$</span><span class="Identifier">message</span> <span class="Statement">=</span> <span class="Statement">$</span><span class="Identifier">app</span><span class="Special">[</span>'<span class="Constant">request</span>'<span class="Special">]</span><span class="Type">-&gt;</span>get<span class="Special">(</span>'<span class="Constant">message</span>'<span class="Special">)</span>;
+<span class="LineNr">32 </span>    <span class="Statement">if</span> <span class="Special">(</span><span class="Statement">$</span><span class="Identifier">name</span> <span class="Statement">&amp;&amp;</span> <span class="Statement">$</span><span class="Identifier">message</span><span class="Special">)</span> <span class="Special">{</span>
+<span class="LineNr">33 </span>        <span class="Statement">$</span><span class="Identifier">app</span><span class="Special">[</span>'<span class="Constant">db</span>'<span class="Special">]</span><span class="Type">-&gt;</span><span class="Identifier">insert</span><span class="Special">(</span>'<span class="Constant">posts</span>', <span class="Type">array</span><span class="Special">(</span>'<span class="Constant">name</span>' <span class="Statement">=</span><span class="Statement">&gt;</span> <span class="Statement">$</span><span class="Identifier">name</span>, '<span class="Constant">message</span>' <span class="Statement">=</span><span class="Statement">&gt;</span> <span class="Statement">$</span><span class="Identifier">message</span><span class="Special">))</span>;
+<span class="LineNr">34 </span>    <span class="Special">}</span>
+<span class="LineNr">35 </span>    <span class="Statement">return</span> <span class="Statement">$</span><span class="Identifier">app</span><span class="Type">-&gt;</span>redirect<span class="Special">(</span>'<span class="Constant">/</span>'<span class="Special">)</span>;
+<span class="LineNr">36 </span><span class="Special">})</span>;
+<span class="LineNr">37 </span>
+<span class="LineNr">38 </span><span class="Statement">$</span><span class="Identifier">app</span><span class="Type">-&gt;</span>run<span class="Special">()</span>;
+</pre>
+</body>
+</html>
